@@ -1,0 +1,106 @@
+/*==============================
+  CSS Reset
+===============================*/
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    tab-size: 4;
+    scroll-behavior: smooth;
+    /*  overscroll-behavior: none; if scroll is rubberbanding at the top */
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/*==============================
+  Layout
+===============================*/
+
+    /* background: linear-gradient(135deg,
+                #1E1F4B 0%,
+                #4B1E6A 30%,
+                #2c225e 60%,
+                #725AC1 100%); */
+                /* linear-gradient(180deg, #1E1F4B, #4B1E6A); */
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', system-ui, sans-serif;
+    color: white;
+    background-image:
+        url('/scribble.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #0c0c1c;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+
+    background-size: 150%;
+    animation: zoomDrift 150s linear infinite;
+}
+
+@keyframes zoomDrift {
+    0% {
+        background-position: 0% 0%;
+        background-size: 150%;
+    }
+
+    50% {
+        background-size: 152%;
+    }
+
+    100% {
+        background-position: 100% 100%;
+        background-size: 150%;
+    }
+}
+
+.minimal-mode-animations {
+    animation: none !important;
+    transition: none !important;
+}
+
+.minimal-mode-illustrations {
+    background-image: none;
+}

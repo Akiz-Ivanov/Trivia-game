@@ -1,0 +1,29 @@
+import Button from "./Button"
+import './Results.css'
+import success from "../assets/Breaking barriers-bro.svg"
+
+export default function Results({ score, maxScore, resetGame, minimalMode }) {
+    const scorePercentage = (score / maxScore) * 100;
+
+    const message =
+        scorePercentage < 33 ? "Better luck next time!" :
+        scorePercentage < 66 ? "Pretty good!" :
+        "Great job!"
+
+    const imgStyle = minimalMode.animations
+        ? { animation: 'floatIn 1s ease-in-out', transform: 'none', opacity: 1 }
+        : {};
+
+    return (
+        <div className="results-card">
+            {!minimalMode.illustrations
+                && <img src={success} alt="Success" style={imgStyle} />}
+            <p className="score-text">Correct answers: {score} out of {maxScore}.</p>
+            <p className="percentage-text">Percentage: {scorePercentage.toFixed(2)}%</p>
+            <p className="message-text">{message}</p>
+            <Button className="play-again-btn" type="button" onClick={resetGame}>
+                Play Again
+            </Button>
+        </div>
+    )
+}
