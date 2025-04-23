@@ -29,7 +29,7 @@ function App() {
   const [shuffledAnswers, setShuffledAnswers] = useState([])
   const [showResults, setShowResults] = useState(false)
   const [minimalMode, setMinimalMode] = useState({
-    animations: false,
+    animations: true,
     illustrations: false
   })
 

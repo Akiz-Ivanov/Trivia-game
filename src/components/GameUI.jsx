@@ -2,6 +2,7 @@ import Button from "./Button"
 import clsx from 'clsx'
 import './GameUI.css'
 import { motion, AnimatePresence } from "framer-motion"
+import { categoryBg } from '../assets/imports.js'
 
 export default function GameUI({
     question,
@@ -37,33 +38,6 @@ export default function GameUI({
             </Button>
         )
     })
-
-    const categoryBg = {
-        Geography: "/src/assets/geography.svg",
-        "Science: Gadgets": "/src/assets/science-gadgets.svg",
-        "General Knowledge": "/src/assets/general-knowledge.svg",
-        "Entertainment: Books": "/src/assets/entertainment-books.svg",
-        "Entertainment: Film": "/src/assets/entertainment-film.svg",
-        "Entertainment: Music": "/src/assets/entertainment-music.svg",
-        "Entertainment: Musicals & Theatres": "/src/assets/entertainment-musicals-theatres.svg",
-        "Entertainment: Television": "/src/assets/entertainment-television.svg",
-        "Entertainment: Video Games": "/src/assets/entertainment-video-games.svg",
-        "Entertainment: Board Games": "/src/assets/entertainment-board-games.svg",
-        "Science & Nature": "/src/assets/science-nature.svg",
-        "Science: Computers": "/src/assets/science-computers.svg",
-        "Science: Mathematics": "/src/assets/science-mathematics.svg",
-        "Mythology": "/src/assets/mythology.svg",
-        "Sports": "/src/assets/sports.svg",
-        "History": "/src/assets/history.svg",
-        "Politics": "/src/assets/politics.svg",
-        "Art": "/src/assets/art.svg",
-        "Celebrities": "/src/assets/celebrities.svg",
-        "Animals": "/src/assets/animals.svg",
-        "Vehicles": "/src/assets/vehicles.svg",
-        "Entertainment: Comics": "/src/assets/entertainment-comics.svg",
-        "Entertainment: Japanese Anime & Manga": "/src/assets/entertainment-anime-manga.svg",
-        "Entertainment: Cartoon & Animations": "/src/assets/entertainment-cartoon-animations.svg"
-    }
 
     return (
         <>

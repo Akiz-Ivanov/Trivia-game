@@ -26,12 +26,12 @@ export default function Form({ onSubmit, onChange, isFirstRender, minimalMode, h
                         <label htmlFor="animationsToggle" style={{ display: 'flex', alignItems: 'center' }}>
                             <ReactSwitch
                                 id="animationsToggle"
-                                checked={minimalMode.animations}
+                                checked={!minimalMode.animations}
                                 onChange={handleToggleAnimations}
                                 offColor="#888"
                                 onColor="#0c0"
                             />
-                            <span className="toggle-label" style={{ marginRight: '10px' }}>Disable animations</span>
+                            <span className="toggle-label" style={{ marginRight: '10px' }}>Enable animations (may impact performance on low-end devices)</span>
                         </label>
                     </div>
                     <div>

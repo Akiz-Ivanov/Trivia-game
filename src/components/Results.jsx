@@ -1,6 +1,6 @@
 import Button from "./Button"
 import './Results.css'
-import success from "../assets/Breaking barriers-bro.svg"
+import success from "../assets/svgs/Breaking barriers-bro.svg"
 
 export default function Results({ score, maxScore, resetGame, minimalMode }) {
     const scorePercentage = (score / maxScore) * 100;
