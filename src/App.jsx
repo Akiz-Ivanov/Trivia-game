@@ -7,6 +7,7 @@ import Error from './components/Error'
 import shuffleArray from './utils'
 import LoadingOverlay from './components/LoadingOverlay'
 import Results from './components/Results'
+import ai from './services/ai'
 
 function App() {
   // Static value for the initial form data
@@ -32,6 +33,11 @@ function App() {
     animations: true,
     illustrations: false
   })
+  // const [extraInfo, setExtraInfo] = useState("")
+  const [gameAddons, setGameAddons] = useState({
+    aiTrivia: '',
+    hint: ''
+  })
 
   // Derived values
   const maxScore = triviaData.length
@@ -41,7 +47,7 @@ function App() {
       const className = `minimal-mode-${key}`;
       document.body.classList.toggle(className, value);
     });
-  }, [minimalMode]);
+  }, [minimalMode])
 
   // Shuffle answers when trivia data or question index changes
   useEffect(() => {
@@ -103,12 +109,14 @@ function App() {
     setScore(0)
     setSelectedAnswer(null)
     setShuffledAnswers([])
+    setGameAddons(prev => ({ ...prev, aiTrivia: '', hint: '' }))
   }
 
   // Load next question
   const loadNextQuestion = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1)
     setSelectedAnswer(null)
+    setGameAddons(prev => ({ ...prev, aiTrivia: '', hint: '' }))
   }
 
   // Process the selected answer (correct or incorrect)
@@ -125,10 +133,42 @@ function App() {
     setShowResults(true)
   }
 
+  // Fetch extra info 
+  const handleExtraInfoClick = (question, answer, category) => {
+    setIsLoading(true)
+    ai.getExtraInfo(question, answer, category)
+      .then(message => {
+        setGameAddons(prev => ({ ...prev, aiTrivia: message, hint: '' }))
+      })
+      .catch(error => {
+        console.error("Error fetching extra info:", error);
+        setGameAddons( prev => ({ ...prev, aiTrivia: "Sorry, couldn't fetch extra info."}));
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
 
+  // Fetch hint
+  const handleHintClick = (question, answer, category) => {
+    setIsLoading(true)
+    ai.getHint(question, answer, category)
+      .then(message => {
+        setGameAddons(prev => ({ ...prev, hint: message }))
+      })
+      .catch(error => {
+        console.error("Error fetching hint:", error);
+        setGameAddons(prev => ({ ...prev, hint: "Sorry, couldn't fetch hint."}));
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
 
+  // Toggle animations
   const handleToggleAnimations = () => setMinimalMode(prev => ({ ...prev, animations: !prev.animations }))
 
+  // Toggle illustrations
   const handleToggleIllustrations = () => setMinimalMode(prev => ({ ...prev, illustrations: !prev.illustrations }))
 
   // Render JSX based on the current game state
@@ -143,21 +183,24 @@ function App() {
           handleToggleAnimations={handleToggleAnimations}
           handleToggleIllustrations={handleToggleIllustrations} />
         : null}
-      {isLoading && <LoadingOverlay />}
       {isGameOn && !isError && (
         <GameUI
-          question={triviaData[currentQuestionIndex]}
-          answers={shuffledAnswers}
-          isLastQuestion={currentQuestionIndex === triviaData.length - 1}
-          selectedAnswer={selectedAnswer}
-          processAnswerSelection={processAnswerSelection}
-          nextQuestion={loadNextQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          maxScore={maxScore}
-          handleShowResults={handleShowResults}
-          minimalMode={minimalMode}
+        question={triviaData[currentQuestionIndex]}
+        answers={shuffledAnswers}
+        isLastQuestion={currentQuestionIndex === triviaData.length - 1}
+        selectedAnswer={selectedAnswer}
+        processAnswerSelection={processAnswerSelection}
+        nextQuestion={loadNextQuestion}
+        currentQuestionIndex={currentQuestionIndex}
+        maxScore={maxScore}
+        handleShowResults={handleShowResults}
+        minimalMode={minimalMode}
+        handleExtraInfoClick={handleExtraInfoClick}
+        handleHintClick={handleHintClick}
+        gameAddons={gameAddons}
         />
       )}
+      {isLoading && <LoadingOverlay />}
       {isError && <Error onClick={resetError} />}
       {showResults && <Results score={score} maxScore={maxScore} resetGame={resetGame} minimalMode={minimalMode} />}
     </main>

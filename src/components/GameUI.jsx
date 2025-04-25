@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import './GameUI.css'
 import { motion, AnimatePresence } from "framer-motion"
 import { categoryBg } from '../assets/imports.js'
+import GameMeta from "./GameMeta.jsx"
 
 export default function GameUI({
     question,
@@ -14,7 +15,10 @@ export default function GameUI({
     maxScore,
     currentQuestionIndex,
     handleShowResults,
-    minimalMode
+    minimalMode,
+    handleExtraInfoClick,
+    handleHintClick,
+    gameAddons
 }) {
 
     //Render buttons
@@ -52,20 +56,12 @@ export default function GameUI({
                     transition={minimalMode.animations ? { duration: 0 } : { duration: 0.5 }}
                     layout
                 >
-                    <p className="game-category">{question.category}</p>
-                    <div className="progress-container">
-                        <div
-                            className="progress-bar"
-                            style={{
-                                width: `${((currentQuestionIndex + 1) / maxScore) * 100}%`,
-                            }}
-                        />
-                    </div>
-                    <div className="game-card__meta">
-                        <span>Question {currentQuestionIndex + 1} / {maxScore}</span>
-                        <span className="meta-separator">•</span>
-                        <span className="game-card__difficulty">{question.difficulty}</span>
-                    </div>
+                    <GameMeta
+                        category={question.category}
+                        difficulty={question.difficulty}
+                        currentQuestionIndex={currentQuestionIndex}
+                        maxScore={maxScore}
+                    />
                     <p className="game-card__question">{question.question}</p>
                     <div className="btn-wrapper">
                         {renderAnswers}
@@ -90,6 +86,35 @@ export default function GameUI({
                         >
                             Show Results
                         </Button>
+                    )}
+                    <div className="game-card__game-addons-container">
+                        <Button
+                            type="button"
+                            onClick={() => handleHintClick(question.question, question.correct_answer, question.category)}
+                            disabled={selectedAnswer || !!gameAddons.hint}
+                            className="game-card__extra-info-button"
+                            aria-label="Get additional information and a fun fact about this question"
+                        >
+                            Get a Hint 💡
+                        </Button>
+                        <Button
+                            type="button"
+                            onClick={() => handleExtraInfoClick(question.question, question.correct_answer, question.category)}
+                            disabled={!selectedAnswer || !!gameAddons.aiTrivia}
+                            className="game-card__extra-info-button"
+                            aria-label="Get additional information and a fun fact about this question"
+                        >
+                            Trivia Flavor 🌟
+                        </Button>
+                    </div>
+                    {gameAddons.hint && (
+                        <div className="game-card__extra-info">
+                            <strong>Hint:</strong> {gameAddons.hint}
+                        </div>
+                    )}
+                    {gameAddons.aiTrivia && (
+                        <div className="game-card__extra-info" dangerouslySetInnerHTML={{ __html: gameAddons.aiTrivia.replace(/\n/g, '<br />') }}>
+                        </div>
                     )}
                 </motion.div>
             </AnimatePresence>
