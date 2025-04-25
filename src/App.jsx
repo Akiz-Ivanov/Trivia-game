@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import api from './services/api'
 import './App.css'
 import Form from './components/FormParts/Form'
@@ -33,7 +33,6 @@ function App() {
     animations: true,
     illustrations: false
   })
-  // const [extraInfo, setExtraInfo] = useState("")
   const [gameAddons, setGameAddons] = useState({
     aiTrivia: '',
     hint: ''
@@ -42,20 +41,31 @@ function App() {
   // Derived values
   const maxScore = triviaData.length
 
+  // Refs
+  const controllerRef = useRef(new AbortController())
+
+  // Apply minimal mode
   useEffect(() => {
     Object.entries(minimalMode).forEach(([key, value]) => {
-      const className = `minimal-mode-${key}`;
-      document.body.classList.toggle(className, value);
-    });
+      const className = `minimal-mode-${key}`
+      document.body.classList.toggle(className, value)
+    })
   }, [minimalMode])
 
   // Shuffle answers when trivia data or question index changes
   useEffect(() => {
+
+    controllerRef.current = new AbortController()
+
     if (triviaData.length) {
       const { incorrect_answers, correct_answer } = triviaData[currentQuestionIndex]
       const answers = [...incorrect_answers, correct_answer]
       const shuffledAnswers = shuffleArray(answers)
       setShuffledAnswers(shuffledAnswers)
+    }
+
+    return () => {
+      controllerRef.current.abort();
     }
   }, [triviaData, currentQuestionIndex])
 
@@ -96,7 +106,9 @@ function App() {
 
   // Reset the error state
   const resetError = () => {
+    setFormData(initialFormData)
     setIsError(false)
+    api.resetTriviaToken()
   }
 
   // Reset the game state
@@ -110,6 +122,7 @@ function App() {
     setSelectedAnswer(null)
     setShuffledAnswers([])
     setGameAddons(prev => ({ ...prev, aiTrivia: '', hint: '' }))
+    api.resetTriviaToken()
   }
 
   // Load next question
@@ -128,6 +141,7 @@ function App() {
     }
   }
 
+  // Show results button click
   const handleShowResults = () => {
     setIsGameOn(false)
     setShowResults(true)
@@ -136,13 +150,13 @@ function App() {
   // Fetch extra info 
   const handleExtraInfoClick = (question, answer, category) => {
     setIsLoading(true)
-    ai.getExtraInfo(question, answer, category)
+    ai.getExtraInfo(question, answer, category, controllerRef.current.signal)
       .then(message => {
         setGameAddons(prev => ({ ...prev, aiTrivia: message, hint: '' }))
       })
       .catch(error => {
         console.error("Error fetching extra info:", error);
-        setGameAddons( prev => ({ ...prev, aiTrivia: "Sorry, couldn't fetch extra info."}));
+        setGameAddons(prev => ({ ...prev, aiTrivia: "Sorry, couldn't fetch extra info." }));
       })
       .finally(() => {
         setIsLoading(false)
@@ -152,13 +166,13 @@ function App() {
   // Fetch hint
   const handleHintClick = (question, answer, category) => {
     setIsLoading(true)
-    ai.getHint(question, answer, category)
+    ai.getHint(question, answer, category, controllerRef.current.signal)
       .then(message => {
         setGameAddons(prev => ({ ...prev, hint: message }))
       })
       .catch(error => {
         console.error("Error fetching hint:", error);
-        setGameAddons(prev => ({ ...prev, hint: "Sorry, couldn't fetch hint."}));
+        setGameAddons(prev => ({ ...prev, hint: "Sorry, couldn't fetch hint." }));
       })
       .finally(() => {
         setIsLoading(false)
@@ -185,19 +199,20 @@ function App() {
         : null}
       {isGameOn && !isError && (
         <GameUI
-        question={triviaData[currentQuestionIndex]}
-        answers={shuffledAnswers}
-        isLastQuestion={currentQuestionIndex === triviaData.length - 1}
-        selectedAnswer={selectedAnswer}
-        processAnswerSelection={processAnswerSelection}
-        nextQuestion={loadNextQuestion}
-        currentQuestionIndex={currentQuestionIndex}
-        maxScore={maxScore}
-        handleShowResults={handleShowResults}
-        minimalMode={minimalMode}
-        handleExtraInfoClick={handleExtraInfoClick}
-        handleHintClick={handleHintClick}
-        gameAddons={gameAddons}
+          question={triviaData[currentQuestionIndex]}
+          answers={shuffledAnswers}
+          isLastQuestion={currentQuestionIndex === triviaData.length - 1}
+          selectedAnswer={selectedAnswer}
+          processAnswerSelection={processAnswerSelection}
+          nextQuestion={loadNextQuestion}
+          currentQuestionIndex={currentQuestionIndex}
+          maxScore={maxScore}
+          handleShowResults={handleShowResults}
+          minimalMode={minimalMode}
+          handleExtraInfoClick={handleExtraInfoClick}
+          handleHintClick={handleHintClick}
+          gameAddons={gameAddons}
+          isLoading={isLoading}
         />
       )}
       {isLoading && <LoadingOverlay />}

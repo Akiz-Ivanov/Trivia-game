@@ -4,7 +4,8 @@ import axios from 'axios'
 const DEEPINFRA_API_URL = "https://api.deepinfra.com/v1/openai/chat/completions"
 const DEEPINFRA_API_KEY = import.meta.env.VITE_DEEPINFRA_API_KEY
 
-const getExtraInfo = async (question, answer, category) => {
+// Fetch extra info
+const getExtraInfo = async (question, answer, category, signal) => {
 
     const systemPrompt = `
 You are a trivia enhancer. Your ONLY role is to add fun context to existing answers - NEVER correct them.
@@ -54,18 +55,23 @@ Add trivia flavor and provide informative or fun context (DO NOT CORRECT, DO NOT
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${DEEPINFRA_API_KEY}`
-            }
+            },
+            signal
         })
-
         return response.data.choices[0].message.content
 
     } catch (err) {
+        if (axios.isCancel(err)) {
+            console.log('Extra info request canceled')
+            return ""
+        }
         console.error("Error fetching AI trivia info:", err)
         return "Something went wrong. Please try again later."
     }
 }
 
-const getHint = async (question, answer, category) => {
+// Fetch hint
+const getHint = async (question, answer, category, signal) => {
 
     const systemPrompt = `
     You are a trivia assistant.
@@ -108,12 +114,17 @@ Answer (EXACT USER INPUT): ${answer}
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${DEEPINFRA_API_KEY}`
-            }
+            },
+            signal
         })
 
         return response.data.choices[0].message.content
 
     } catch (err) {
+        if (axios.isCancel(err)) {
+            console.log('Extra info request canceled')
+            return ""
+        }
         console.error("Error fetching AI trivia info:", err)
         return "Something went wrong. Please try again later."
     }

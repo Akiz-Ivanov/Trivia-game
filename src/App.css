@@ -14,4 +14,30 @@ main {
     justify-content: center;
     gap: 1rem;
     text-align: center;
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    background-color: rgba(100, 150, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    margin: 1rem auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    width: clamp(18.75rem, 90%, 37.5rem);
+    padding: clamp(1rem, 3vw, 2rem);
+    background-repeat: no-repeat;
+    background-position: center top;
+}
+
+.error-img {
+    animation: 'floatIn 1s ease-in-out';
+    
+    opacity: 1;
+}
+
+@keyframes floatIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

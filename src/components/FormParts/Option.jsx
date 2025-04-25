@@ -2,7 +2,7 @@ export default function Option({ valueArray, category }) {
 
     const optionsToRender = category === "amount"
         ? valueArray
-        : [{ name: `Any ${category}`, value: undefined }, ...valueArray]
+        : [{ name: `Any ${category}`, value: "" }, ...valueArray]
 
     const optionEl = optionsToRender.map(({ name, value }) => {
         return (

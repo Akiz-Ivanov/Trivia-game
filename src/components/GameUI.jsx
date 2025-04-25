@@ -18,7 +18,8 @@ export default function GameUI({
     minimalMode,
     handleExtraInfoClick,
     handleHintClick,
-    gameAddons
+    gameAddons,
+    isLoading
 }) {
 
     //Render buttons
@@ -91,16 +92,16 @@ export default function GameUI({
                         <Button
                             type="button"
                             onClick={() => handleHintClick(question.question, question.correct_answer, question.category)}
-                            disabled={selectedAnswer || !!gameAddons.hint}
+                            disabled={selectedAnswer || !!gameAddons.hint || isLoading}
                             className="game-card__extra-info-button"
-                            aria-label="Get additional information and a fun fact about this question"
+                            aria-label="Get hint from the AI"
                         >
                             Get a Hint 💡
                         </Button>
                         <Button
                             type="button"
                             onClick={() => handleExtraInfoClick(question.question, question.correct_answer, question.category)}
-                            disabled={!selectedAnswer || !!gameAddons.aiTrivia}
+                            disabled={!selectedAnswer || !!gameAddons.aiTrivia || isLoading}
                             className="game-card__extra-info-button"
                             aria-label="Get additional information and a fun fact about this question"
                         >
