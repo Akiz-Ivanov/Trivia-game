@@ -8,6 +8,7 @@ import shuffleArray from './utils'
 import LoadingOverlay from './components/LoadingOverlay'
 import Results from './components/Results'
 import ai from './services/ai'
+import { ErrorBoundary } from 'react-error-boundary';
 
 function App() {
   // Static value for the initial form data
@@ -30,8 +31,8 @@ function App() {
   const [shuffledAnswers, setShuffledAnswers] = useState([])
   const [showResults, setShowResults] = useState(false)
   const [minimalMode, setMinimalMode] = useState({
-    animations: true,
-    illustrations: false
+    animations: false,
+    illustrations: true
   })
   const [gameAddons, setGameAddons] = useState({
     aiTrivia: '',
@@ -46,11 +47,12 @@ function App() {
 
   // Apply minimal mode
   useEffect(() => {
-    Object.entries(minimalMode).forEach(([key, value]) => {
-      const className = `minimal-mode-${key}`
-      document.body.classList.toggle(className, value)
-    })
-  }, [minimalMode])
+
+    document.body.classList.toggle('minimal-mode-animations', !minimalMode.animations);
+
+    document.body.classList.toggle('minimal-mode-illustrations', !minimalMode.illustrations);
+
+  }, [minimalMode]);
 
   // Shuffle answers when trivia data or question index changes
   useEffect(() => {
@@ -115,14 +117,21 @@ function App() {
   const resetGame = () => {
     setFormData(initialFormData)
     setTriviaData([])
-    setIsFirstRender(true)
-    setShowResults(false)
     setCurrentQuestionIndex(0)
     setScore(0)
     setSelectedAnswer(null)
     setShuffledAnswers([])
     setGameAddons(prev => ({ ...prev, aiTrivia: '', hint: '' }))
+    
+    setIsGameOn(false)
+    setIsError(false)
+    setIsLoading(false)
+    setShowResults(false)
+    setIsFirstRender(true)
+    
     api.resetTriviaToken()
+    controllerRef.current.abort();
+    controllerRef.current = new AbortController();
   }
 
   // Load next question
@@ -198,22 +207,28 @@ function App() {
           handleToggleIllustrations={handleToggleIllustrations} />
         : null}
       {isGameOn && !isError && (
-        <GameUI
-          question={triviaData[currentQuestionIndex]}
-          answers={shuffledAnswers}
-          isLastQuestion={currentQuestionIndex === triviaData.length - 1}
-          selectedAnswer={selectedAnswer}
-          processAnswerSelection={processAnswerSelection}
-          nextQuestion={loadNextQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          maxScore={maxScore}
-          handleShowResults={handleShowResults}
-          minimalMode={minimalMode}
-          handleExtraInfoClick={handleExtraInfoClick}
-          handleHintClick={handleHintClick}
-          gameAddons={gameAddons}
-          isLoading={isLoading}
-        />
+        <ErrorBoundary
+          FallbackComponent={Error}
+          onReset={resetGame}
+        >
+
+          <GameUI
+            question={triviaData[currentQuestionIndex]}
+            answers={shuffledAnswers}
+            isLastQuestion={currentQuestionIndex === triviaData.length - 1}
+            selectedAnswer={selectedAnswer}
+            processAnswerSelection={processAnswerSelection}
+            nextQuestion={loadNextQuestion}
+            currentQuestionIndex={currentQuestionIndex}
+            maxScore={maxScore}
+            handleShowResults={handleShowResults}
+            minimalMode={minimalMode}
+            handleExtraInfoClick={handleExtraInfoClick}
+            handleHintClick={handleHintClick}
+            gameAddons={gameAddons}
+            isLoading={isLoading}
+          />
+        </ErrorBoundary>
       )}
       {isLoading && <LoadingOverlay />}
       {isError && <Error onClick={resetError} />}

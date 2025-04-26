@@ -30,8 +30,10 @@ main {
 }
 
 .error-img {
-    animation: 'floatIn 1s ease-in-out';
-    
+    animation: floatIn 0.8s ease-out forwards;
+    animation: floatIn 0.8s ease-out forwards;
+        opacity: 0;
+        transform: translateY(10px);
     opacity: 1;
 }
 
@@ -40,4 +42,11 @@ main {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.icon {
+    display: inline-block;
+    margin-left: 0.25rem;
+    vertical-align: middle;
+    
 }

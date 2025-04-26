@@ -4,6 +4,7 @@ import './GameUI.css'
 import { motion, AnimatePresence } from "framer-motion"
 import { categoryBg } from '../assets/imports.js'
 import GameMeta from "./GameMeta.jsx"
+import { ArrowRight, BarChart2, Sparkles, Lightbulb } from "lucide-react"
 
 export default function GameUI({
     question,
@@ -44,18 +45,26 @@ export default function GameUI({
         )
     })
 
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
     return (
         <>
             <AnimatePresence mode="wait">
                 <motion.div
                     key={question.id}
                     className="game-card"
-                    style={{ backgroundImage: !minimalMode.illustrations ? `url(${categoryBg[question.category]})` : "none" }}
-                    initial={minimalMode.animations ? false : { opacity: 0, scale: 0.95, y: 20 }}
-                    animate={minimalMode.animations ? {} : { opacity: 1, scale: 1, y: 0 }}
-                    exit={minimalMode.animations ? {} : { opacity: 0, scale: 0.95, y: -20 }}
-                    transition={minimalMode.animations ? { duration: 0 } : { duration: 0.5 }}
-                    layout
+                    style={{
+                        backgroundImage: minimalMode.illustrations ? `url(${categoryBg[question.category]})` : "none",
+                        willChange: minimalMode.animations ? 'transform, opacity' : 'auto'
+                    }}
+                    initial={minimalMode.animations ? { opacity: 0 } : false}
+                    animate={minimalMode.animations ? { opacity: 1 } : false}
+                    exit={minimalMode.animations ? { opacity: 0 } : false}
+                    transition={minimalMode.animations ? {
+                        duration: isMobile ? 0.2 : 0.3,
+                        ease: "easeOut"
+                    } : undefined}
+                    layout={minimalMode.animations} 
                 >
                     <GameMeta
                         category={question.category}
@@ -75,7 +84,7 @@ export default function GameUI({
                             disabled={!selectedAnswer}
                             title={!selectedAnswer ? "Choose an answer to continue" : undefined}
                         >
-                            Next Question
+                            Next Question <ArrowRight className="icon" size={20} />
                         </Button>
                     )}
                     {isLastQuestion && (
@@ -85,7 +94,7 @@ export default function GameUI({
                             onClick={handleShowResults}
                             disabled={!selectedAnswer}
                         >
-                            Show Results
+                            Show Results <BarChart2 className="icon" size={20} />
                         </Button>
                     )}
                     <div className="game-card__game-addons-container">
@@ -96,7 +105,7 @@ export default function GameUI({
                             className="game-card__extra-info-button"
                             aria-label="Get hint from the AI"
                         >
-                            Get a Hint 💡
+                            Get a Hint <Lightbulb color="#facc15" fill="#facc15" className="icon" size={20} strokeWidth={2.5} />
                         </Button>
                         <Button
                             type="button"
@@ -105,7 +114,7 @@ export default function GameUI({
                             className="game-card__extra-info-button"
                             aria-label="Get additional information and a fun fact about this question"
                         >
-                            Trivia Flavor 🌟
+                            Trivia Flavor <Sparkles className="icon" size={20} color="#ffd700" />
                         </Button>
                     </div>
                     {gameAddons.hint && (

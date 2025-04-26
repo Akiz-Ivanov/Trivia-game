@@ -16,9 +16,11 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.7.4",
     "html-entities": "^2.6.0",
+    "lucide-react": "^0.503.0",
     "nanoid": "^5.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-error-boundary": "^5.0.0",
     "react-spinners": "^0.16.1",
     "react-switch": "^7.1.0"
   },

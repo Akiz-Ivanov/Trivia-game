@@ -1,6 +1,7 @@
 import Button from "./Button"
 import './Results.css'
 import success from "../assets/svgs/Breaking barriers-bro.svg"
+import { Power } from "lucide-react"
 
 export default function Results({ score, maxScore, resetGame, minimalMode }) {
     const scorePercentage = (score / maxScore) * 100;
@@ -16,13 +17,13 @@ export default function Results({ score, maxScore, resetGame, minimalMode }) {
 
     return (
         <div className="results-card">
-            {!minimalMode.illustrations
+            {minimalMode.illustrations
                 && <img src={success} alt="Success" style={imgStyle} />}
             <p className="score-text">Correct answers: {score} out of {maxScore}.</p>
             <p className="percentage-text">Percentage: {scorePercentage.toFixed(2)}%</p>
             <p className="message-text">{message}</p>
             <Button className="play-again-btn" type="button" onClick={resetGame}>
-                Play Again
+                Play Again <Power className="icon" size={20} strokeWidth={2} />
             </Button>
         </div>
     )
