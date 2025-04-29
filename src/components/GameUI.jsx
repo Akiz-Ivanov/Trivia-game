@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { categoryBg } from '../assets/imports.js'
 import GameMeta from "./GameMeta.jsx"
 import { ArrowRight, BarChart2, Sparkles, Lightbulb } from "lucide-react"
+import GameCardExtraInfo from "./InfoAI.jsx"
 
 export default function GameUI({
     question,
@@ -118,17 +119,13 @@ export default function GameUI({
                         </Button>
                     </div>
                     {gameAddons.hint && (
-                        <div className="game-card__extra-info">
-                            <strong>Hint:</strong> {gameAddons.hint}
-                        </div>
+                        <GameCardExtraInfo label="Hint" content={gameAddons.hint} />
                     )}
                     {gameAddons.aiTrivia && (
-                        <div className="game-card__extra-info" dangerouslySetInnerHTML={{ __html: gameAddons.aiTrivia.replace(/\n/g, '<br />') }}>
-                        </div>
+                        <GameCardExtraInfo label="AI Trivia" content={gameAddons.aiTrivia} />
                     )}
                 </motion.div>
             </AnimatePresence>
         </>
     )
-
 }

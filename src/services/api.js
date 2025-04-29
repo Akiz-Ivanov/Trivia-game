@@ -4,6 +4,8 @@ import { nanoid } from 'nanoid'
 
 let sessionToken = null
 
+
+
 const getNewSessionToken = async () => {
     try {
         const response = await axios.get('https://opentdb.com/api_token.php?command=request')
@@ -15,13 +17,13 @@ const getNewSessionToken = async () => {
     }
 }
 
-export const resetTriviaToken = () => {
-    sessionToken = null
-}
-
-export const fetchTriviaData = async (amount, category, difficulty) => {
-
-    if (!sessionToken) {
+// export const resetTriviaToken = () => {
+    //     sessionToken = null
+    // }
+    
+    export const fetchTriviaData = async (amount, category, difficulty) => {
+        
+        if (!sessionToken) {
         await getNewSessionToken()
     }
 
@@ -53,4 +55,4 @@ export const fetchTriviaData = async (amount, category, difficulty) => {
     }
 }
 
-export default { fetchTriviaData, resetTriviaToken }
+export default { fetchTriviaData}

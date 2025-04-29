@@ -11,6 +11,12 @@ export default function Results({ score, maxScore, resetGame, minimalMode }) {
         scorePercentage < 66 ? "Pretty good!" :
         "Great job!"
 
+    const messageStyle =
+        scorePercentage < 33 ? "#e74c3c" :
+        scorePercentage < 66 ? "#f1c40f" :
+        "#2ecc71";
+
+
     const imgStyle = minimalMode.animations
         ? { animation: 'floatIn 1s ease-in-out', transform: 'none', opacity: 1 }
         : {};
@@ -21,7 +27,7 @@ export default function Results({ score, maxScore, resetGame, minimalMode }) {
                 && <img src={success} alt="Success" style={imgStyle} />}
             <p className="score-text">Correct answers: {score} out of {maxScore}.</p>
             <p className="percentage-text">Percentage: {scorePercentage.toFixed(2)}%</p>
-            <p className="message-text">{message}</p>
+            <p className="message-text" style={{ color: messageStyle }}>{message}</p>
             <Button className="play-again-btn" type="button" onClick={resetGame}>
                 Play Again <Power className="icon" size={20} strokeWidth={2} />
             </Button>

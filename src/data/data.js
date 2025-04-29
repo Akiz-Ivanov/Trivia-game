@@ -1,3 +1,17 @@
+const titles = [
+    "Ready, set, quiz! Choose your topic and start your trivia adventure!",
+    "It's trivia time! Select your category and get started!",
+    "Get ready for a fun trivia challenge! Pick your questions and go!",
+    "Think you're a trivia master? Show us what you know!",
+    "Choose your trivia challenge and let the quiz begin!",
+    "Trivia awaits! Pick your category and let's get started!",
+    "Test your knowledge with a fun trivia quiz. Ready? Go!",
+    "Pick your trivia adventure and start quizzing!",
+    "Time to prove your trivia skills! Choose a topic and start now!",
+    "Challenge your mind—pick a topic and test your smarts!",
+    "Quick! Grab a topic before your brain realizes what’s happening!"
+]
+
 const data = {
     amount: [
         {
@@ -49,4 +63,4 @@ const data = {
     ]
 }
 
-export default data
+export { data, titles }

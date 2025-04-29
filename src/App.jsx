@@ -9,6 +9,10 @@ import LoadingOverlay from './components/LoadingOverlay'
 import Results from './components/Results'
 import ai from './services/ai'
 import { ErrorBoundary } from 'react-error-boundary';
+import Options from './components/Options'
+import { Settings } from "lucide-react"
+import useSound from 'use-sound'
+import correctSfx from '../src/assets/audio/correct.mp3'
 
 function App() {
   // Static value for the initial form data
@@ -38,6 +42,10 @@ function App() {
     aiTrivia: '',
     hint: ''
   })
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+
+  // Audio
+  const [playCorrectSfx] = useSound(correctSfx)
 
   // Derived values
   const maxScore = triviaData.length
@@ -108,9 +116,9 @@ function App() {
 
   // Reset the error state
   const resetError = () => {
-    setFormData(initialFormData)
+    setFormData(prev => ({ ...prev, difficulty: undefined }))
     setIsError(false)
-    api.resetTriviaToken()
+    // api.resetTriviaToken()
   }
 
   // Reset the game state
@@ -129,7 +137,7 @@ function App() {
     setShowResults(false)
     setIsFirstRender(true)
     
-    api.resetTriviaToken()
+    // api.resetTriviaToken()
     controllerRef.current.abort();
     controllerRef.current = new AbortController();
   }
@@ -197,6 +205,24 @@ function App() {
   // Render JSX based on the current game state
   return (
     <main>
+      {isGameOn && (
+        <button
+          className="settings-btn"
+          onClick={() => setIsOptionsOpen(true)}
+          aria-label="Open settings"
+        >
+          <Settings stroke='#7FB1D6' className="settings-icon" />
+        </button>
+      )}
+      <Options
+        isOpen={isOptionsOpen}
+        onClose={() => setIsOptionsOpen(false)}
+        minimalMode={minimalMode}
+        handleToggleAnimations={handleToggleAnimations}
+        handleToggleIllustrations={handleToggleIllustrations}
+      // isMusicPlaying={isPlaying}
+      // toggleMusic={toggleMusic}
+      />
       {!isGameOn && !isError && !isLoading && !showResults ?
         <Form
           onChange={handleChange}
@@ -204,7 +230,8 @@ function App() {
           isFirstRender={isFirstRender}
           minimalMode={minimalMode}
           handleToggleAnimations={handleToggleAnimations}
-          handleToggleIllustrations={handleToggleIllustrations} />
+          handleToggleIllustrations={handleToggleIllustrations}
+          formData={formData} />
         : null}
       {isGameOn && !isError && (
         <ErrorBoundary
@@ -231,7 +258,7 @@ function App() {
         </ErrorBoundary>
       )}
       {isLoading && <LoadingOverlay />}
-      {isError && <Error onClick={resetError} />}
+      {isError && <Error onClick={resetError} resetErrorBoundary={resetError} />}
       {showResults && <Results score={score} maxScore={maxScore} resetGame={resetGame} minimalMode={minimalMode} />}
     </main>
   )

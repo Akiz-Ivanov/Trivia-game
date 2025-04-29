@@ -53,12 +53,12 @@ video {
   Layout
 ===============================*/
 
-    /* background: linear-gradient(135deg,
+/* background: linear-gradient(135deg,
                 #1E1F4B 0%,
                 #4B1E6A 30%,
                 #2c225e 60%,
                 #725AC1 100%); */
-                /* linear-gradient(180deg, #1E1F4B, #4B1E6A); */
+/* linear-gradient(180deg, #1E1F4B, #4B1E6A); */
 body {
     min-height: 100vh;
     min-height: 100dvh;
@@ -108,3 +108,4 @@ body {
 button {
     font-family: 'Poppins', sans-serif;
 }
+
