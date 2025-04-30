@@ -3,11 +3,10 @@ import Button from "../Button"
 import { useRef, useEffect } from "react"
 import "./Form.css"
 import ReactSwitch from 'react-switch'
-import { titles } from "../../data/data"
+import { randomTitle } from "../../data/data"
 
 export default function Form({ onSubmit, onChange, isFirstRender, minimalMode, handleToggleAnimations, handleToggleIllustrations, formData }) {
 
-    const randomTitle = titles[Math.floor(Math.random() * titles.length)]
     const formRef = useRef(null)
 
     useEffect(() => {
@@ -22,7 +21,7 @@ export default function Form({ onSubmit, onChange, isFirstRender, minimalMode, h
             <div className="form-container" ref={formRef} tabIndex={-1}>
                 <form onSubmit={onSubmit}>
                     <h1>{randomTitle}</h1>
-                    
+        
                     <Select onChange={onChange} formData={formData} />
                     <div>
                        

@@ -46,8 +46,6 @@ export default function GameUI({
         )
     })
 
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
     return (
         <>
             <AnimatePresence mode="wait">
@@ -62,7 +60,7 @@ export default function GameUI({
                     animate={minimalMode.animations ? { opacity: 1 } : false}
                     exit={minimalMode.animations ? { opacity: 0 } : false}
                     transition={minimalMode.animations ? {
-                        duration: isMobile ? 0.2 : 0.3,
+                        duration: 0.2,
                         ease: "easeOut"
                     } : undefined}
                     layout={minimalMode.animations} 

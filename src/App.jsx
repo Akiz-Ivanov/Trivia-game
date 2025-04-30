@@ -123,7 +123,7 @@ function App() {
 
   // Reset the game state
   const resetGame = () => {
-    setFormData(initialFormData)
+    // setFormData(initialFormData)
     setTriviaData([])
     setCurrentQuestionIndex(0)
     setScore(0)
@@ -238,7 +238,6 @@ function App() {
           FallbackComponent={Error}
           onReset={resetGame}
         >
-
           <GameUI
             question={triviaData[currentQuestionIndex]}
             answers={shuffledAnswers}

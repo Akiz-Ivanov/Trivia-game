@@ -63,4 +63,7 @@ const data = {
     ]
 }
 
-export { data, titles }
+
+const randomTitle = titles[Math.floor(Math.random() * titles.length)]
+
+export { data, randomTitle }

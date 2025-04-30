@@ -92,3 +92,53 @@ button {
 .settings-icon {
     filter: brightness(0.9) contrast(1.2) saturate(1.5);
 }
+
+/*==============================
+    Error Image
+===============================*/
+.error-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease;
+}
+
+.error-img.loaded {
+    opacity: 1;
+    animation: floatIn 0.8s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+/*==============================
+  skeleton testing
+===============================*/
+.error-img-wrapper {
+    width: min(18.75rem, 80vw);
+    height: min(18.75rem, 80vw);
+}
+
+.skeleton-wrapper {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.error-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.error-img.loaded {
+    opacity: 1;
+    animation: floatIn 0.8s ease-out forwards;
+}
+
+@keyframes floatIn {
+    to {
+        transform: translateY(0);
+    }
+}
