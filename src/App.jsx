@@ -13,6 +13,7 @@ import Options from './components/Options'
 import { Settings } from "lucide-react"
 import useSound from 'use-sound'
 import correctSfx from '../src/assets/audio/correct.mp3'
+import Button from './components/Button'
 
 function App() {
   // Static value for the initial form data
@@ -206,13 +207,13 @@ function App() {
   return (
     <main>
       {isGameOn && (
-        <button
+        <Button
           className="settings-btn"
           onClick={() => setIsOptionsOpen(true)}
           aria-label="Open settings"
         >
-          <Settings stroke='#7FB1D6' className="settings-icon" />
-        </button>
+          <Settings stroke='#7FB1D6' className="settings-icon" size={25}/>
+        </Button>
       )}
       <Options
         isOpen={isOptionsOpen}
@@ -225,13 +226,13 @@ function App() {
       />
       {!isGameOn && !isError && !isLoading && !showResults ?
         <Form
-          onChange={handleChange}
-          onSubmit={startGame}
-          isFirstRender={isFirstRender}
-          minimalMode={minimalMode}
-          handleToggleAnimations={handleToggleAnimations}
-          handleToggleIllustrations={handleToggleIllustrations}
-          formData={formData} />
+        onChange={handleChange}
+        onSubmit={startGame}
+        isFirstRender={isFirstRender}
+        minimalMode={minimalMode}
+        handleToggleAnimations={handleToggleAnimations}
+        handleToggleIllustrations={handleToggleIllustrations}
+        formData={formData} />
         : null}
       {isGameOn && !isError && (
         <ErrorBoundary
@@ -256,7 +257,7 @@ function App() {
           />
         </ErrorBoundary>
       )}
-      {isLoading && <LoadingOverlay />}
+      {isLoading && <LoadingOverlay isLoading={isLoading} />}
       {isError && <Error onClick={resetError} resetErrorBoundary={resetError} />}
       {showResults && <Results score={score} maxScore={maxScore} resetGame={resetGame} minimalMode={minimalMode} />}
     </main>

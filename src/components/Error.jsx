@@ -42,6 +42,7 @@ export default function Error({ onClick, resetErrorBoundary }) {
                     alt="Error"
                     onLoad={() => setImageLoaded(true)}
                     style={{ display: imageLoaded ? 'block' : 'none' }}
+                    
                 />
             </div>
             <p className="error-message">

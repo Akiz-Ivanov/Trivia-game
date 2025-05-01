@@ -67,9 +67,9 @@ const getHint = async (question, answer, category, signal) => {
     // Dynamically generated user prompt (includes question/answer/category)
     const userPrompt = `Category: ${category}
 Question (EXACT USER INPUT): ${question}
-Answer (EXACT USER INPUT): ${answer}
+Correct Answer (EXACT USER INPUT): ${answer}
 
-    Give the user a helpful hint to figure it out themselves. (DO NOT CORRECT QUESTION) 
+    Provide one extremely brief clue to help guess the answer. Be as helpful as possible without revealing correct answer. (DO NOT CORRECT QUESTION, DO NOT REVEAL THE CORRECT ANSWER): 
     `
 
     // requestPayload for axios request below it

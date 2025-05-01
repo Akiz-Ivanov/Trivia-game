@@ -6,6 +6,8 @@ import { categoryBg } from '../assets/imports.js'
 import GameMeta from "./GameMeta.jsx"
 import { ArrowRight, BarChart2, Sparkles, Lightbulb } from "lucide-react"
 import GameCardExtraInfo from "./InfoAI.jsx"
+import { useEffect, useState } from "react"
+import shuffleArray from '../utils.js'
 
 export default function GameUI({
     question,
@@ -24,6 +26,21 @@ export default function GameUI({
     isLoading
 }) {
 
+    //State values
+    const [removedAnswers, setRemovedAnswers] = useState([]);
+
+    //Reset removedAnswers when question changes
+    useEffect(() => {
+        setRemovedAnswers([]);
+    }, [question]);
+
+    //Shuffle incorrect answers
+    function handleFiftyFifty(question) {
+        const shuffledIncorrect = shuffleArray(question.incorrect_answers)
+        const removed = shuffledIncorrect.slice(0, 2)
+        setRemovedAnswers(removed)
+    }
+
     //Render buttons
     const renderAnswers = answers.map(answer => {
         const isCorrect = answer === question.correct_answer
@@ -32,7 +49,7 @@ export default function GameUI({
                 key={`${question.id}-${answer}`}
                 type="button"
                 onClick={() => processAnswerSelection(answer, isCorrect)}
-                disabled={!!selectedAnswer}
+                disabled={!!selectedAnswer || removedAnswers.includes(answer)}
                 className={clsx(
                     'game-card__answer',
                     {
@@ -114,6 +131,16 @@ export default function GameUI({
                             aria-label="Get additional information and a fun fact about this question"
                         >
                             Trivia Flavor <Sparkles className="icon" size={20} color="#ffd700" />
+                        </Button>
+                        <Button
+                            type="button"
+                            onClick={() => handleFiftyFifty(question)}
+                            disabled={selectedAnswer || isLoading || removedAnswers.length === 2}
+                            className="fifty-fifty-btn"
+                            aria-label="Get two incorrect answers"
+                            title="Eliminate two wrong answers"
+                        >
+                            50/50
                         </Button>
                     </div>
                     {gameAddons.hint && (

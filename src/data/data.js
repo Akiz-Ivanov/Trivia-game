@@ -1,3 +1,6 @@
+console.log("Data loaded");
+
+
 const titles = [
     "Ready, set, quiz! Choose your topic and start your trivia adventure!",
     "It's trivia time! Select your category and get started!",
