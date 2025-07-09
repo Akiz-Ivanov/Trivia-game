@@ -1,7 +1,7 @@
 > 👉 Check out the latest version here: [Trivia Game v2](https://github.com/Akiz-Ivanov/trivia-game-v2)
-> ⚠️ This is an **older version** of the game.  
 
-# Trivia Game (v1 - Archived)
+
+# Trivia Game (v1 - Archived) ⚠️ This is an **older version** of the game.  
 
 A fun, lightweight trivia app with hints, sound effects, and toggleable animations — built by a solo developer. Early version — feedback welcome!
 
